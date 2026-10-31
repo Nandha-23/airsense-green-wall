@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AirSense Green Wall | Environmental Dashboard</title>
+<style>
+:root{--bg:#071311;--panel:#0e201c;--panel2:#122923;--line:#234239;--text:#e9f6ef;--muted:#9bb8aa;--green:#65e6a4;--lime:#b7f36b;--amber:#ffc66d;--red:#ff7979;--blue:#82cfff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -15%,#1c4938 0,transparent 45%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,select,input{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:#17362b;color:var(--text);padding:9px 13px;border-radius:10px}button:hover{filter:brightness(1.15)}.app{display:grid;grid-template-columns:235px minmax(0,1fr);min-height:100vh}
+aside{border-right:1px solid var(--line);padding:25px 16px;background:#091713c9}.brand{display:flex;gap:11px;align-items:center;padding:0 8px 28px}.logo{width:39px;height:39px;display:grid;place-items:center;background:linear-gradient(145deg,#a6f56f,#39c98b);border-radius:13px;color:#062016;font-size:21px}.brand strong{display:block;font-size:16px;letter-spacing:.2px}.brand small{color:var(--muted)}.navlabel{font-size:10px;letter-spacing:1.5px;color:#729688;margin:15px 10px 8px}.nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:transparent;border-color:transparent;color:#a8c2b5;margin:4px 0}.nav button.active,.nav button:hover{background:#17382c;border-color:#285746;color:#eafff2}.nav .ico{width:20px;text-align:center}.sidebottom{position:sticky;top:85vh;margin:40px 8px 0;color:var(--muted);font-size:12px}.online-dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:7px;box-shadow:0 0 10px #65e6a4}
+main{padding:27px clamp(16px,3vw,42px) 38px;min-width:0}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:24px}.eyebrow{color:var(--green);text-transform:uppercase;letter-spacing:1.6px;font-size:10px;font-weight:800}.top h1{margin:4px 0 0;font-size:clamp(24px,3vw,34px);letter-spacing:-1px}.sub{color:var(--muted);margin-top:5px}.actions{display:flex;gap:8px;flex-wrap:wrap}.primary{background:var(--green);color:#062017;border-color:var(--green);font-weight:800}.banner{display:flex;gap:12px;align-items:flex-start;background:#2c2818;border:1px solid #65532b;border-radius:13px;padding:13px 16px;margin-bottom:19px;color:#ffe6b1}.banner b{display:block;color:#ffe9bf}.banner span{font-size:12px;color:#e7d2a0}
+.sectionhead{display:flex;justify-content:space-between;align-items:end;margin:24px 0 12px;gap:12px}.sectionhead h2{font-size:17px;margin:0}.sectionhead p{margin:3px 0 0;color:var(--muted);font-size:12px}.tiny{font-size:11px;color:var(--muted)}
+.grid{display:grid;gap:14px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}.card{background:linear-gradient(155deg,#122720,#0c1d19);border:1px solid var(--line);border-radius:17px;padding:17px;min-width:0;box-shadow:0 8px 24px #00000012}.cardtop{display:flex;justify-content:space-between;gap:8px;align-items:center;color:var(--muted);font-size:12px}.iconbox{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#1c3d30;font-size:17px}.value{font-size:31px;letter-spacing:-1.2px;font-weight:750;margin:13px 0 3px}.unit{font-size:14px;color:var(--muted);font-weight:500;letter-spacing:0}.status{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:4px 8px;font-size:10px;font-weight:800;letter-spacing:.4px}.s-green{background:#173f2c;color:#88f3b4}.s-amber{background:#45371b;color:#ffd58c}.s-red{background:#482222;color:#ff9d9d}.s-gray{background:#253630;color:#b7c8bf}.meter{height:5px;background:#263b32;border-radius:99px;overflow:hidden;margin:14px 0 8px}.meter span{display:block;height:100%;border-radius:99px;background:var(--green);transition:width .3s}.muted{color:var(--muted)}.twocol{grid-template-columns:minmax(0,1.55fr) minmax(270px,1fr)}.chartcard{min-height:285px}.charthead{display:flex;justify-content:space-between;align-items:start;gap:10px}.charthead h3{margin:0;font-size:15px}.charthead p{margin:4px 0 0;color:var(--muted);font-size:12px}.chart{width:100%;height:185px;margin-top:15px;display:block}.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:11px}.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}.alertrow{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid #203a30}.alertrow:last-child{border-bottom:0}.alertico{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}.alertrow strong{display:block;font-size:12px}.alertrow p{margin:3px 0;color:var(--muted);font-size:11px}.prediction{background:linear-gradient(135deg,#163b2c,#10231d);border-color:#2e6247}.prediction .big{font-size:22px;font-weight:800;margin:8px 0}.recos{display:grid;gap:9px;margin-top:13px}.reco{display:flex;gap:9px;font-size:12px;color:#d4e6db}.reco span{color:var(--lime)}.lower{grid-template-columns:1.1fr .9fr}.table{width:100%;border-collapse:collapse;font-size:12px}.table th{text-align:left;color:var(--muted);font-weight:600;padding:10px 6px;border-bottom:1px solid var(--line)}.table td{padding:11px 6px;border-bottom:1px solid #1b332a}.table tr:last-child td{border-bottom:0}.settings{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.settings label{font-size:12px;color:var(--muted);display:grid;gap:5px}.settings input{width:100%;background:#091713;border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--text)}.foot{color:#759385;font-size:11px;text-align:center;margin-top:28px}.hide{display:none!important}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.twocol,.lower{grid-template-columns:1fr}.app{grid-template-columns:76px minmax(0,1fr)}aside{padding:20px 10px}.brand{justify-content:center;padding:0 0 25px}.brandtxt,.navlabel,.nav button .label,.sidebottom{display:none}.nav button{justify-content:center;padding:12px 5px}.nav .ico{font-size:18px}.settings{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.app{display:block}aside{display:none}main{padding:19px 13px}.top{align-items:flex-start;flex-direction:column}.kpis{gap:9px}.card{padding:13px}.value{font-size:26px}.settings{grid-template-columns:1fr}.sectionhead{align-items:flex-start;flex-direction:column}.actions button{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+ <div class="brand"><div class="logo">♧</div><div class="brandtxt"><strong>AirSense</strong><small>Green Wall · IoT</small></div></div>
+ <div class="navlabel">WORKSPACE</div><div class="nav">
+ <button class="active" data-target="overview"><span class="ico">▦</span><span class="label">Overview</span></button>
+ <button data-target="sensors"><span class="ico">⌁</span><span class="label">Sensor readings</span></button>
+ <button data-target="hazards"><span class="ico">⚠</span><span class="label">Hazard monitor</span></button>
+ <button data-target="predictions"><span class="ico">◷</span><span class="label">Risk outlook</span></button>
+ <button data-target="history"><span class="ico">▤</span><span class="label">Event history</span></button>
+ <button data-target="settings"><span class="ico">⚙</span><span class="label">Threshold settings</span></button>
+ </div>
+ <div class="sidebottom"><span class="online-dot"></span>Dashboard running<br><span style="padding-left:14px">Demo data mode</span></div>
+</aside>
+<main>
+<header class="top" id="overview">
+ <div><div class="eyebrow">Environmental intelligence</div><h1>Air quality command center</h1><div class="sub">Monitor your space. Understand changes. Act early.</div></div>
+ <div class="actions"><button id="connectSerialBtn" class="primary">🔌 Connect Arduino USB</button><button id="pauseBtn">Ⅱ Pause simulation</button><button id="exportBtn">↓ Export CSV</button></div>
+</header>
+<div class="banner"><div style="font-size:20px">ⓘ</div><div><b id="connectionTitle">Prototype dashboard · Demo mode</b><span id="connectionMessage">Showing your latest Arduino values as the starting snapshot. Connect the board using the USB button to read actual serial output. Gas ADC is not calibrated ppm or an official CPCB AQI measurement.</span></div></div>
+
+<div class="sectionhead" id="sensors"><div><h2>Live sensor snapshot</h2><p>Latest values received from your Serial Monitor</p></div><span class="tiny" id="lastUpdated">Snapshot · just now</span></div>
+<div class="grid kpis">
+ <div class="card"><div class="cardtop"><span>Temperature</span><span class="iconbox">🌡</span></div><div class="value"><span id="tempVal">25.8</span><span class="unit"> °C</span></div><span id="tempStatus" class="status s-green">● NORMAL</span><div class="meter"><span id="tempMeter" style="width:52%"></span></div><div class="tiny">Demo alert threshold: <span id="tempLimitText">35</span> °C</div></div>
+ <div class="card"><div class="cardtop"><span>Relative humidity</span><span class="iconbox">💧</span></div><div class="value"><span id="humVal">70</span><span class="unit"> %</span></div><span id="humStatus" class="status s-amber">● HIGH</span><div class="meter"><span id="humMeter" style="width:70%;background:var(--amber)"></span></div><div class="tiny">Demo alert threshold: <span id="humLimitText">70</span> %</div></div>
+ <div class="card" id="hazards"><div class="cardtop"><span>Gas sensor response</span><span class="iconbox">◉</span></div><div class="value"><span id="gasVal">305</span><span class="unit"> / 1023</span></div><span id="gasStatus" class="status s-amber">● MODERATE · MONITOR</span><div class="meter"><span id="gasMeter" style="width:30%;background:var(--amber)"></span></div><div class="tiny"><span id="gasVolt">1.49</span> V estimated · raw analog response</div></div>
+ <div class="card"><div class="cardtop"><span>Ultrasonic distance</span><span class="iconbox">↔</span></div><div class="value"><span id="distVal">7.67</span><span class="unit"> cm</span></div><span id="distStatus" class="status s-amber">● OBJECT NEAR</span><div class="meter"><span id="distMeter" style="width:15%;background:var(--amber)"></span></div><div class="tiny">Near-object demo threshold: 10 cm</div></div>
+</div>
+
+<div class="sectionhead"><div><h2>Trends & monitoring</h2><p>Recent samples · illustrative demo history</p></div><span class="status s-gray">SIMULATED HISTORY</span></div>
+<div class="grid twocol">
+ <div class="card chartcard"><div class="charthead"><div><h3>Sensor trends</h3><p>Choose a signal to inspect recent changes</p></div><select id="chartSelect" style="background:#0a1b16;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px"><option value="gas">Gas ADC</option><option value="temp">Temperature</option><option value="hum">Humidity</option><option value="dist">Distance</option></select></div><canvas id="trendChart" class="chart" aria-label="Sensor trend chart"></canvas><div class="legend" id="chartLegend"><span><i style="background:var(--lime)"></i>Gas sensor ADC</span></div></div>
+ <div class="card"><div class="charthead"><div><h3>Alerts & events</h3><p>Rule-based flags from current readings</p></div><span class="status s-amber" id="alertCount">2 ACTIVE</span></div><div id="alertList">
+ <div class="alertrow"><div class="alertico" style="background:#45371b">💧</div><div><strong>Humidity at threshold</strong><p>70% · Check airflow and local conditions.</p></div></div>
+ <div class="alertrow"><div class="alertico" style="background:#45371b">↔</div><div><strong>Object detected nearby</strong><p>7.67 cm · This is a proximity reading, not an air hazard.</p></div></div>
+ <div class="alertrow"><div class="alertico" style="background:#173f2c">◉</div><div><strong>Gas response in monitor band</strong><p>ADC 305 · Verify against a calibrated gas monitor.</p></div></div>
+ </div></div>
+</div>
+
+<div class="sectionhead" id="predictions"><div><h2>Risk outlook & recommendations</h2><p>Transparent rules, not a trained predictive AI model</p></div></div>
+<div class="grid twocol">
+ <div class="card prediction"><div class="eyebrow">Rule-based outlook</div><div class="big" id="riskTitle">Monitor conditions</div><div id="riskText" class="muted">Humidity is at the configured alert threshold and the gas sensor response is in the monitor band. This does not establish a confirmed hazardous gas concentration.</div><div class="meter"><span id="riskMeter" style="width:42%;background:var(--amber)"></span></div><div class="tiny" id="riskFoot">Prototype risk indicator: moderate · not a probability or health assessment</div></div>
+ <div class="card"><div class="charthead"><div><h3>Suggested next actions</h3><p>Practical checks for the current snapshot</p></div></div><div class="recos" id="recommendations"><div class="reco"><span>✓</span><div>Improve airflow if humidity remains high; verify with a separate hygrometer if needed.</div></div><div class="reco"><span>✓</span><div>Check the gas sensor module, allow warm-up, and compare with a suitable calibrated detector.</div></div><div class="reco"><span>✓</span><div>Move objects away from the ultrasonic sensor if proximity is not expected.</div></div><div class="reco"><span>✓</span><div>Do not use this prototype to certify indoor air quality or detect life-threatening gas leaks.</div></div></div></div>
+</div>
+
+<div class="sectionhead" id="history"><div><h2>Recent readings</h2><p>In-memory history for the current browser session</p></div><button id="clearHistory">Clear history</button></div>
+<div class="card" style="overflow-x:auto"><table class="table"><thead><tr><th>Time</th><th>Temperature</th><th>Humidity</th><th>Gas ADC</th><th>Distance</th><th>Rule status</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+
+<div class="sectionhead" id="settings"><div><h2>Threshold settings</h2><p>Change demo thresholds; these are not certified safety limits</p></div></div>
+<div class="card"><div class="settings">
+ <label>Temperature alert (°C)<input type="number" id="tempLimit" value="35" min="0" max="100"></label>
+ <label>Humidity alert (%)<input type="number" id="humLimit" value="70" min="0" max="100"></label>
+ <label>Gas moderate ADC<input type="number" id="gasMedLimit" value="300" min="0" max="1023"></label>
+ <label>Gas high ADC<input type="number" id="gasHighLimit" value="600" min="1" max="1023"></label>
+ <label>Object-near distance (cm)<input type="number" id="distLimit" value="10" min="1" max="400"></label>
+ <label style="align-content:end"><button class="primary" id="applySettings">Apply demo thresholds</button></label>
+ </div><p class="tiny" style="margin-bottom:0">Gas bands are configurable prototype labels only. MQ-family sensors require model-specific calibration and environmental compensation; raw ADC is not ppm.</p></div>
+<div class="foot">AirSense Green Wall · Hackathon prototype · Use calibrated instruments for real safety decisions.</div>
+</main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let readings={temp:25.8,hum:70,gas:305,dist:7.67};
+let limits={temp:35,hum:70,gasMed:300,gasHigh:600,dist:10};
+let history=[];
+let simOn=false, timer=null;
+const seed=[{temp:26.1,hum:66,gas:284,dist:18.4},{temp:26,hum:67,gas:291,dist:14.2},{temp:25.9,hum:68,gas:299,dist:12.5},{temp:25.8,hum:70,gas:305,dist:7.67}];
+seed.forEach((r,i)=>history.push({...r,time:new Date(Date.now()-(seed.length-1-i)*120000)}));
+function fmtTime(d){return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function statusFor(r){
+ const a=[];
+ if(r.temp>=limits.temp)a.push('Temperature high');
+ if(r.hum>=limits.hum)a.push('Humidity high');
+ if(r.gas>=limits.gasMed)a.push(r.gas>=limits.gasHigh?'Gas ADC high band':'Gas ADC monitor band');
+ if(r.dist>=0&&r.dist<=limits.dist)a.push('Object near');
+ return a.length?a.join(' · '):'Within demo thresholds';
+}
+function setBadge(el,text,cls){el.textContent='● '+text;el.className='status '+cls;}
+function render(){
+ $('tempVal').textContent=readings.temp.toFixed(1);$('humVal').textContent=readings.hum.toFixed(0);
+ $('gasVal').textContent=readings.gas;$('gasVolt').textContent=(readings.gas*5/1023).toFixed(2);
+ $('distVal').textContent=readings.dist.toFixed(2);
+ $('tempLimitText').textContent=limits.temp;$('humLimitText').textContent=limits.hum;
+ $('tempMeter').style.width=Math.min(100,readings.temp/50*100)+'%';
+ $('humMeter').style.width=Math.min(100,readings.hum)+'%';
+ $('gasMeter').style.width=(readings.gas/1023*100)+'%';
+ $('distMeter').style.width=Math.min(100,readings.dist/50*100)+'%';
+ setBadge($('tempStatus'),readings.temp>=limits.temp?'HIGH':'NORMAL',readings.temp>=limits.temp?'s-red':'s-green');
+ setBadge($('humStatus'),readings.hum>=limits.hum?'HIGH':'NORMAL',readings.hum>=limits.hum?'s-amber':'s-green');
+ setBadge($('gasStatus'),readings.gas>=limits.gasHigh?'HIGH BAND':readings.gas>=limits.gasMed?'MODERATE · MONITOR':'LOW RESPONSE',readings.gas>=limits.gasHigh?'s-red':readings.gas>=limits.gasMed?'s-amber':'s-green');
+ setBadge($('distStatus'),readings.dist<=limits.dist?'OBJECT NEAR':'CLEAR',readings.dist<=limits.dist?'s-amber':'s-green');
+ const alerts=[];
+ if(readings.temp>=limits.temp)alerts.push(['🌡','Temperature threshold reached',`${readings.temp.toFixed(1)} °C · Review local conditions.`,'#482222']);
+ if(readings.hum>=limits.hum)alerts.push(['💧','Humidity at/above threshold',`${readings.hum.toFixed(0)}% · Check airflow and local conditions.`,'#45371b']);
+ if(readings.gas>=limits.gasMed)alerts.push(['◉','Gas sensor response elevated',`ADC ${readings.gas} · Not a calibrated gas concentration.`,'#45371b']);
+ if(readings.dist<=limits.dist)alerts.push(['↔','Object detected nearby',`${readings.dist.toFixed(2)} cm · Proximity only, not an air hazard.`,'#45371b']);
+ $('alertCount').textContent=alerts.length+' ACTIVE';$('alertCount').className='status '+(alerts.some(a=>a[0]==='🌡'||(a[0]==='◉'&&readings.gas>=limits.gasHigh))?'s-red':alerts.length?'s-amber':'s-green');
+ $('alertList').innerHTML=alerts.length?alerts.map(a=>`<div class="alertrow"><div class="alertico" style="background:${a[3]}">${a[0]}</div><div><strong>${a[1]}</strong><p>${a[2]}</p></div></div>`).join(''):'<div class="alertrow"><div class="alertico">✓</div><div><strong>No demo threshold alerts</strong><p>Continue monitoring sensor trends.</p></div></div>';
+ let risk='Low';let riskText='Current readings are below the configured demo thresholds.';let riskW=18;let riskColor='var(--green)';
+ if(readings.gas>=limits.gasMed||readings.hum>=limits.hum){risk='Moderate';riskText='One or more readings have reached a configured monitoring threshold. A gas hazard cannot be confirmed from raw ADC alone.';riskW=42;riskColor='var(--amber)';}
+ if(readings.gas>=limits.gasHigh||readings.temp>=limits.temp){risk='Elevated';riskText='A configured high-band threshold has been crossed. Verify conditions with appropriate calibrated instruments; this is not a prediction of danger.';riskW=70;riskColor='var(--red)';}
+ $('riskTitle').textContent=risk==='Low'?'Conditions look stable (demo)':risk==='Moderate'?'Monitor conditions':'Check conditions promptly';
+ $('riskText').textContent=riskText;$('riskMeter').style.width=riskW+'%';$('riskMeter').style.background=riskColor;
+ $('riskFoot').textContent=`Prototype indicator: ${risk.toLowerCase()} · rules only, not a probability or health assessment`;
+ $('historyBody').innerHTML=history.slice().reverse().slice(0,8).map(r=>`<tr><td>${fmtTime(r.time)}</td><td>${r.temp.toFixed(1)} °C</td><td>${r.hum.toFixed(0)}%</td><td>${r.gas}</td><td>${r.dist.toFixed(2)} cm</td><td>${statusFor(r)}</td></tr>`).join('');
+ $('lastUpdated').textContent='Updated '+fmtTime(new Date());
+ drawChart();
+}
+function drawChart(){
+ const c=$('trendChart'),ctx=c.getContext('2d'),dpr=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;
+ c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);
+ const key=$('chartSelect').value, vals=history.slice(-18).map(r=>r[key]);if(!vals.length)return;
+ const labels={gas:'Gas sensor ADC',temp:'Temperature °C',hum:'Humidity %',dist:'Distance cm'};
+ const color=key==='gas'?'#b7f36b':key==='temp'?'#82cfff':key==='hum'?'#ffc66d':'#65e6a4';
+ const pad={l:32,r:10,t:14,b:23},cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+ let min=Math.min(...vals),max=Math.max(...vals);if(max===min){max+=1;min-=1;}let extra=(max-min)*.22;min=Math.max(0,min-extra);max+=extra;
+ ctx.font='10px system-ui';ctx.strokeStyle='#234239';ctx.fillStyle='#8aa99a';ctx.lineWidth=1;
+ for(let i=0;i<4;i++){let y=pad.t+ch*i/3;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();ctx.fillText((max-(max-min)*i/3).toFixed(key==='gas'?0:1),1,y+3);}
+ const pts=vals.map((v,i)=>({x:pad.l+(vals.length===1?.5:i/(vals.length-1))*cw,y:pad.t+(max-v)/(max-min)*ch}));
+ ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+ ctx.lineTo(pts[pts.length-1].x,pad.t+ch);ctx.lineTo(pts[0].x,pad.t+ch);ctx.closePath();ctx.globalAlpha=.12;ctx.fillStyle=color;ctx.fill();ctx.globalAlpha=1;
+ pts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();});
+ $('chartLegend').innerHTML=`<span><i style="background:${color}"></i>${labels[key]}</span><span>${vals.length} samples · demo history</span>`;
+}
+function addReading(r){readings=r;history.push({...r,time:new Date()});if(history.length>80)history.shift();render();}
+$('chartSelect').addEventListener('change',drawChart);
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.target).scrollIntoView({behavior:'smooth',block:'start'});}));
+$('applySettings').onclick=()=>{limits={temp:+$('tempLimit').value,hum:+$('humLimit').value,gasMed:+$('gasMedLimit').value,gasHigh:+$('gasHighLimit').value,dist:+$('distLimit').value};if(limits.gasHigh<=limits.gasMed){alert('Gas high band must be greater than the moderate band.');return;}render();};
+$('pauseBtn').onclick=()=>{simOn=!simOn;$('pauseBtn').textContent=simOn?'Ⅱ Pause simulation':'▶ Start simulation';if(timer)clearInterval(timer);timer=null;if(simOn){timer=setInterval(()=>{let r={temp:Math.max(22,Math.min(39,readings.temp+(Math.random()-.52)*.8)),hum:Math.max(35,Math.min(90,readings.hum+(Math.random()-.48)*3)),gas:Math.max(120,Math.min(850,Math.round(readings.gas+(Math.random()-.45)*28))),dist:Math.max(3,Math.min(80,readings.dist+(Math.random()-.5)*7))};addReading(r);},3000);}};
+$('clearHistory').onclick=()=>{history=[];render();};
+$('exportBtn').onclick=()=>{const rows=[['time','temperature_c','humidity_percent','gas_adc_raw','distance_cm','rule_status'],...history.map(r=>[r.time.toISOString(),r.temp,r.hum,r.gas,r.dist,statusFor(r)])];const csv=rows.map(row=>row.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='airsense-readings-demo.csv';a.click();URL.revokeObjectURL(a.href);};
+
+window.addEventListener('resize',drawChart);
+
+// USB serial connection: supported in Chrome/Edge on a secure context.
+let serialPort = null;
+let serialReader = null;
+let serialConnected = false;
+let serialBuffer = "";
+let serialKeepReading = false;
+
+function setConnectionState(connected, message) {
+  serialConnected = connected;
+  $('connectionTitle').textContent = connected
+    ? 'Arduino connected · Live hardware data'
+    : 'Prototype dashboard · Demo mode';
+  $('connectionMessage').textContent = message;
+  $('connectSerialBtn').textContent = connected ? '✓ Arduino connected' : '🔌 Connect Arduino USB';
+  $('connectSerialBtn').classList.toggle('primary', !connected);
+}
+
+function updateFromArduinoLine(line) {
+  // Supports lines from the sketch:
+  // Temperature: 25.80 C
+  // Humidity: 70.00 %
+  // Distance: 7.67 cm
+  // Gas Sensor ADC: 305 / 1023
+  // Also supports "Gas Sensor Value: 475 | Voltage: 2.32 V"
+  let changed = false;
+  let m;
+
+  m = line.match(/Temperature:\s*(-?\d+(?:\.\d+)?)/i);
+  if (m && !/ERROR|NO ECHO/i.test(line)) { readings.temp = Number(m[1]); changed = true; }
+
+  m = line.match(/Humidity:\s*(-?\d+(?:\.\d+)?)/i);
+  if (m && !/ERROR/i.test(line)) { readings.hum = Number(m[1]); changed = true; }
+
+  m = line.match(/(?:Distance:|Ultrasonic:)\s*(-?\d+(?:\.\d+)?)\s*cm/i);
+  if (m && !/NO ECHO/i.test(line)) { readings.dist = Number(m[1]); changed = true; }
+
+  m = line.match(/Gas Sensor ADC:\s*(\d+)/i);
+  if (!m) m = line.match(/Gas Sensor Value:\s*(\d+)/i);
+  if (m) { readings.gas = Number(m[1]); changed = true; }
+
+  if (changed) {
+    history.push({...readings, time: new Date()});
+    if (history.length > 80) history.shift();
+    render();
+  }
+}
+
+async function readSerial(port) {
+  const decoder = new TextDecoderStream();
+  const closed = port.readable.pipeTo(decoder.writable).catch(() => {});
+  const reader = decoder.readable.getReader();
+  serialReader = reader;
+  serialKeepReading = true;
+  try {
+    while (serialKeepReading) {
+      const {value, done} = await reader.read();
+      if (done) break;
+      serialBuffer += value;
+      const lines = serialBuffer.split(/\r?\n/);
+      serialBuffer = lines.pop() || "";
+      for (const line of lines) updateFromArduinoLine(line.trim());
+    }
+  } catch (err) {
+    if (serialKeepReading) console.error('Serial read error:', err);
+  } finally {
+    try { reader.releaseLock(); } catch (_) {}
+    await closed;
+  }
+}
+
+$('connectSerialBtn').addEventListener('click', async () => {
+  if (!('serial' in navigator)) {
+    alert('Web Serial is not available in this browser/context. Use the latest Chrome or Edge and open this page from localhost (for example, VS Code Live Server).');
+    return;
+  }
+  if (serialConnected) {
+    serialKeepReading = false;
+    try { if (serialReader) await serialReader.cancel(); } catch (_) {}
+    try { if (serialPort) await serialPort.close(); } catch (_) {}
+    serialPort = null; serialReader = null;
+    setConnectionState(false, 'Arduino disconnected. The displayed values remain as the last snapshot; simulated updates are separate.');
+    return;
+  }
+  try {
+    if (timer) { clearInterval(timer); timer = null; simOn = false; $('pauseBtn').textContent = '▶ Start simulation'; }
+    serialPort = await navigator.serial.requestPort();
+    await serialPort.open({baudRate: 9600});
+    setConnectionState(true, 'Reading actual sensor lines from Arduino over USB at 9600 baud. Keep the Serial Monitor closed while this dashboard is connected.');
+    readSerial(serialPort);
+  } catch (err) {
+    console.error(err);
+    setConnectionState(false, 'Could not connect. Check the USB cable, select the correct Arduino port in the browser prompt, and close Arduino IDE Serial Monitor before trying again.');
+    alert('Could not connect to Arduino. Make sure the board is plugged in and close Arduino IDE Serial Monitor/Serial Plotter, then try again.');
+  }
+});
+render();
+</script>
+</body></html>
